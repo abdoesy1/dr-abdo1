@@ -17,20 +17,13 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            /* Dynamic Background Gradient */
-            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #030303 70%);
+            background: radial-gradient(circle at 50% 50%, #171717 0%, #030303 70%);
         }
 
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         
-        .shimmer-border {
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            background-size: 200% 100%;
-            animation: shimmer 3s infinite linear;
-        }
-
         .card-glass { 
             background: rgba(255, 255, 255, 0.03); 
             backdrop-filter: blur(12px); 
@@ -43,26 +36,25 @@
             transform: translateY(-5px);
         }
 
-        .cursor { display: inline-block; width: 3px; height: 1em; background: white; animation: blink 1s infinite; }
+        .cursor { display: inline-block; width: 3px; height: 1em; background: white; animation: blink 1s infinite; vertical-align: middle; }
     </style>
 </head>
 <body class="flex items-center justify-center p-4 md:p-8">
 
-    <main class="w-full max-w-5xl flex flex-col justify-center">
+    <main class="w-full max-w-4xl flex flex-col justify-center">
         
-        <div class="text-center mb-12 md:mb-20">
-            <!-- Responsive text that stays on one line via clamping -->
-            <h1 class="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight whitespace-nowrap overflow-hidden">
+        <div class="text-center mb-12">
+            <h1 class="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight">
                 <span id="typewriter" class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400"></span>
                 <span class="cursor"></span>
             </h1>
-            <p class="text-gray-400 text-sm md:text-lg mt-4 opacity-70">Secure, Fast, and Professional Payments.</p>
+            <p class="text-gray-400 text-sm md:text-base mt-4 opacity-70">Secure, Fast, and Professional Payments.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
             
             <!-- PayPal Section -->
-            <div class="card-glass p-6 md:p-8 rounded-3xl flex flex-col justify-between">
+            <div class="card-glass p-6 md:p-8 rounded-3xl flex flex-col justify-between animate-[float_6s_ease-in-out_infinite]">
                 <div>
                     <h3 class="text-xl font-bold mb-2">PayPal</h3>
                     <p class="text-gray-500 text-sm mb-6">Standard secure payment gateway</p>
@@ -71,7 +63,7 @@
             </div>
 
             <!-- Wise Section -->
-            <div class="card-glass p-6 md:p-8 rounded-3xl">
+            <div class="card-glass p-6 md:p-8 rounded-3xl animate-[float_7s_ease-in-out_infinite]">
                 <h3 class="text-xl font-bold mb-2">Wise</h3>
                 <p class="text-gray-500 text-sm mb-6">Choose your amount</p>
                 <div class="grid grid-cols-3 gap-3">
@@ -81,8 +73,8 @@
                 </div>
             </div>
 
-            <!-- Crypto Vault - Spans full width on LG -->
-            <div class="card-glass p-6 md:p-8 rounded-3xl lg:col-span-2">
+            <!-- Crypto Vault -->
+            <div class="card-glass p-6 md:p-8 rounded-3xl lg:col-span-2 animate-[float_8s_ease-in-out_infinite]">
                 <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
                     <h3 class="text-xl font-bold">Crypto Vault</h3>
                     <div class="flex gap-2 p-1 bg-black/30 rounded-2xl border border-white/5">
@@ -96,7 +88,7 @@
             </div>
 
             <!-- FunPay -->
-            <div class="card-glass p-6 md:p-8 rounded-3xl lg:col-span-2">
+            <div class="card-glass p-6 md:p-8 rounded-3xl lg:col-span-2 animate-[float_5s_ease-in-out_infinite]">
                 <h3 class="text-xl font-bold mb-2">FunPay</h3>
                 <p class="text-gray-500 text-sm mb-6">External profile verification</p>
                 <a href="https://funpay.com/en/users/20157502/" target="_blank" class="block w-full py-4 text-center bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-2xl transition-all active:scale-95">Visit Profile</a>
@@ -109,7 +101,7 @@
     </div>
 
     <script>
-        const text = "Choose Your Preferred Payment Method";
+        const text = "Choose Your Preferred Payment";
         const el = document.getElementById('typewriter');
         let i = 0, isDeleting = false;
 
