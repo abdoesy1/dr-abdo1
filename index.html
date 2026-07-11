@@ -8,108 +8,142 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         
-        body { font-family: 'Inter', sans-serif; background-color: #030303; color: white; overflow-x: hidden; }
-        
-        /* Premium Background Glow */
-        .glow-bg { background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #030303 70%); }
-        
-        /* Card Tilt Effect */
-        .tilt-card { transition: transform 0.1s ease-out, box-shadow 0.3s ease; perspective: 1000px; }
-        .tilt-card:hover { transform: translateY(-10px) rotateX(2deg) rotateY(2deg); }
-        
-        /* Text Gradient Animation */
-        .text-gradient { background: linear-gradient(90deg, #60a5fa, #a855f7, #60a5fa); background-size: 200%; animation: gradient 5s linear infinite; }
-        @keyframes gradient { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-        
-        /* Breathing Animation */
-        .breathing { animation: breathe 6s ease-in-out infinite; }
-        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.01); } }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #030303; 
+            color: white; 
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            /* Dynamic Background Gradient */
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #030303 70%);
+        }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         
-        /* Card Glass */
-        .card-glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .shimmer-border {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+        }
+
+        .card-glass { 
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .card-glass:hover {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .cursor { display: inline-block; width: 3px; height: 1em; background: white; animation: blink 1s infinite; }
     </style>
 </head>
-<body class="min-h-screen glow-bg">
+<body class="flex items-center justify-center p-4 md:p-8">
 
-    <main class="container mx-auto px-6 py-20 max-w-4xl">
-        <div class="text-center mb-16">
-            <h1 class="text-2xl sm:text-4xl md:text-6xl font-bold mb-6 tracking-tight whitespace-nowrap overflow-hidden">
-                <span id="typewriter" class="text-transparent bg-clip-text text-gradient"></span>
-                <span class="animate-pulse">|</span>
+    <main class="w-full max-w-5xl flex flex-col justify-center">
+        
+        <div class="text-center mb-12 md:mb-20">
+            <!-- Responsive text that stays on one line via clamping -->
+            <h1 class="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight whitespace-nowrap overflow-hidden">
+                <span id="typewriter" class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400"></span>
+                <span class="cursor"></span>
             </h1>
-            <p class="text-gray-400 text-lg">Secure, Fast, and Easy Payments.</p>
+            <p class="text-gray-400 text-sm md:text-lg mt-4 opacity-70">Secure, Fast, and Professional Payments.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 breathing">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
             
-            <!-- PayPal -->
-            <div class="card-glass p-8 rounded-3xl tilt-card group">
-                <h3 class="text-xl font-bold mb-4">PayPal</h3>
-                <a href="https://paypal.me/AbdelrahmanSayed252" target="_blank" class="block w-full py-4 text-center bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-500 transition-all active:scale-95">Open PayPal</a>
+            <!-- PayPal Section -->
+            <div class="card-glass p-6 md:p-8 rounded-3xl flex flex-col justify-between">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">PayPal</h3>
+                    <p class="text-gray-500 text-sm mb-6">Standard secure payment gateway</p>
+                </div>
+                <a href="https://paypal.me/AbdelrahmanSayed252" target="_blank" class="w-full py-4 text-center bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-2xl transition-all active:scale-95">Open PayPal</a>
             </div>
 
-            <!-- Wise -->
-            <div class="card-glass p-8 rounded-3xl tilt-card group">
-                <h3 class="text-xl font-bold mb-4">Wise</h3>
-                <div class="grid grid-cols-3 gap-2">
-                    <a href="https://wise.com/pay/r/KxhTAlJl7THuBAs" target="_blank" class="py-3 bg-white/5 rounded-lg text-center hover:bg-green-600 transition-all font-bold active:scale-95">$5</a>
-                    <a href="https://wise.com/pay/r/mtJUgCpvc3KtyBk" target="_blank" class="py-3 bg-white/5 rounded-lg text-center hover:bg-green-600 transition-all font-bold active:scale-95">$10</a>
-                    <a href="https://wise.com/pay/r/wwS0FVUrluPvgtk" target="_blank" class="py-3 bg-white/5 rounded-lg text-center hover:bg-green-600 transition-all font-bold active:scale-95">$20</a>
+            <!-- Wise Section -->
+            <div class="card-glass p-6 md:p-8 rounded-3xl">
+                <h3 class="text-xl font-bold mb-2">Wise</h3>
+                <p class="text-gray-500 text-sm mb-6">Choose your amount</p>
+                <div class="grid grid-cols-3 gap-3">
+                    <a href="https://wise.com/pay/r/KxhTAlJl7THuBAs" target="_blank" class="py-3 bg-white/5 rounded-xl text-center hover:bg-white/10 transition-all font-bold active:scale-95">$5</a>
+                    <a href="https://wise.com/pay/r/mtJUgCpvc3KtyBk" target="_blank" class="py-3 bg-white/5 rounded-xl text-center hover:bg-white/10 transition-all font-bold active:scale-95">$10</a>
+                    <a href="https://wise.com/pay/r/wwS0FVUrluPvgtk" target="_blank" class="py-3 bg-white/5 rounded-xl text-center hover:bg-white/10 transition-all font-bold active:scale-95">$20</a>
                 </div>
             </div>
 
-            <!-- Crypto Vault -->
-            <div class="card-glass p-8 rounded-3xl md:col-span-2 tilt-card group">
-                <h3 class="text-xl font-bold mb-6">Crypto Vault</h3>
-                <div class="flex gap-2 mb-4">
-                    <button onclick="switchCrypto('ltc')" class="crypto-btn px-6 py-2 bg-white/10 rounded-full hover:bg-blue-600 transition-all">LTC</button>
-                    <button onclick="switchCrypto('usdt')" class="crypto-btn px-6 py-2 bg-white/10 rounded-full hover:bg-green-600 transition-all">USDT</button>
-                    <button onclick="switchCrypto('btc')" class="crypto-btn px-6 py-2 bg-white/10 rounded-full hover:bg-orange-600 transition-all">BTC</button>
+            <!-- Crypto Vault - Spans full width on LG -->
+            <div class="card-glass p-6 md:p-8 rounded-3xl lg:col-span-2">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                    <h3 class="text-xl font-bold">Crypto Vault</h3>
+                    <div class="flex gap-2 p-1 bg-black/30 rounded-2xl border border-white/5">
+                        <button onclick="switchCrypto('ltc')" class="crypto-btn px-6 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition-all">LTC</button>
+                        <button onclick="switchCrypto('usdt')" class="crypto-btn px-6 py-2 rounded-xl hover:bg-white/20 transition-all">USDT</button>
+                        <button onclick="switchCrypto('btc')" class="crypto-btn px-6 py-2 rounded-xl hover:bg-white/20 transition-all">BTC</button>
+                    </div>
                 </div>
-                <p id="addr" class="font-mono text-sm break-all bg-black/50 p-4 rounded-xl border border-white/5 mb-4 text-blue-300">LQsXy5iuRn2wbky6JGL1NmYkZRLXGkT2Ew</p>
-                <button onclick="copyAddr()" class="w-full py-4 bg-white/5 hover:bg-white/10 rounded-xl font-bold transition-all active:scale-95">Copy Address</button>
+                <div id="addr-box" class="font-mono text-xs md:text-sm break-all bg-black/40 p-4 rounded-xl border border-white/10 mb-4 text-blue-300">LQsXy5iuRn2wbky6JGL1NmYkZRLXGkT2Ew</div>
+                <button onclick="copyAddr()" class="w-full py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl font-bold transition-all active:scale-95">Copy Address</button>
             </div>
 
             <!-- FunPay -->
-            <div class="card-glass p-8 rounded-3xl tilt-card group md:col-span-2">
-                <h3 class="text-xl font-bold mb-4">FunPay</h3>
-                <a href="https://funpay.com/en/users/20157502/" target="_blank" class="block w-full py-4 text-center bg-purple-600 text-white font-semibold rounded-xl hover:bg-purple-500 transition-all active:scale-95">Visit Profile</a>
+            <div class="card-glass p-6 md:p-8 rounded-3xl lg:col-span-2">
+                <h3 class="text-xl font-bold mb-2">FunPay</h3>
+                <p class="text-gray-500 text-sm mb-6">External profile verification</p>
+                <a href="https://funpay.com/en/users/20157502/" target="_blank" class="block w-full py-4 text-center bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-2xl transition-all active:scale-95">Visit Profile</a>
             </div>
         </div>
     </main>
 
-    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white text-black px-8 py-4 rounded-full font-bold hidden shadow-2xl z-50 animate-bounce">
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white text-black px-8 py-4 rounded-full font-bold shadow-2xl hidden z-50 animate-bounce">
         Copied Successfully!
     </div>
 
     <script>
-        // Typewriter Logic (Looping)
         const text = "Choose Your Preferred Payment Method";
         const el = document.getElementById('typewriter');
         let i = 0, isDeleting = false;
+
         function type() {
             el.innerText = text.substring(0, i);
             if (!isDeleting && i < text.length) i++;
             else if (isDeleting && i > 0) i--;
             else isDeleting = !isDeleting;
-            setTimeout(type, isDeleting ? 30 : 80);
+            setTimeout(type, isDeleting ? 30 : 100);
         }
         type();
 
-        // Crypto
-        const addrs = { ltc: 'LQsXy5iuRn2wbky6JGL1NmYkZRLXGkT2Ew', usdt: 'TWAa6spHGSDJdrk8CTNfcGjKAd9CakDFhK', btc: 'bc1qf60mv4p5g2x424e9tcjz46sdez9sednvdpgt4p' };
-        function switchCrypto(c) { document.getElementById('addr').innerText = addrs[c]; }
+        const addrs = { 
+            ltc: 'LQsXy5iuRn2wbky6JGL1NmYkZRLXGkT2Ew', 
+            usdt: 'TWAa6spHGSDJdrk8CTNfcGjKAd9CakDFhK', 
+            btc: 'bc1qf60mv4p5g2x424e9tcjz46sdez9sednvdpgt4p' 
+        };
+
+        function switchCrypto(c) { 
+            const addrEl = document.getElementById('addr-box');
+            addrEl.classList.add('opacity-0');
+            setTimeout(() => {
+                addrEl.innerText = addrs[c];
+                addrEl.classList.remove('opacity-0');
+            }, 200);
+            
+            document.querySelectorAll('.crypto-btn').forEach(btn => btn.classList.remove('bg-white/10'));
+            event.target.classList.add('bg-white/10');
+        }
         
-        // Robust Copy
         function copyAddr() {
-            const addr = document.getElementById('addr').innerText;
+            const addr = document.getElementById('addr-box').innerText;
             const t = document.getElementById('toast');
             
-            // Fallback copy
             const ta = document.createElement("textarea");
             ta.value = addr;
             document.body.appendChild(ta);
