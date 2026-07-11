@@ -1,0 +1,193 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Copy, Check, QrCode, X, ExternalLink, 
+  Wallet, DollarSign, Bitcoin, CreditCard, 
+  Gamepad2, Sparkles, ChevronRight, Mail, ShieldAlert, Lock
+} from 'lucide-react';
+
+const globalStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  body { font-family: 'Inter', sans-serif; background-color: #050505; color: #ffffff; overflow-x: hidden; }
+  .bg-grid { background-size: 50px 50px; background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px); }
+  @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+  .animate-float { animation: float 6s ease-in-out infinite; }
+  .blur-screen { filter: blur(20px); transition: filter 0.5s ease; }
+`;
+
+export default function App() {
+  const [toast, setToast] = useState({ visible: false, message: '' });
+  const [qrModal, setQrModal] = useState({ visible: false, address: '', name: '' });
+  const [activeCrypto, setActiveCrypto] = useState('ltc');
+  const [devToolsDetected, setDevToolsDetected] = useState(false);
+  const [displayedText, setDisplayedText] = useState('');
+
+  const fullText = "Choose Your Preferred Payment Method";
+
+  useEffect(() => {
+    let index = 0;
+    let isDeleting = false;
+    const tick = () => {
+      const currentText = isDeleting ? fullText.substring(0, index - 1) : fullText.substring(0, index + 1);
+      setDisplayedText(currentText);
+      if (!isDeleting && index === fullText.length) setTimeout(() => (isDeleting = true), 2000);
+      else if (isDeleting && index === 0) isDeleting = false;
+      index = isDeleting ? index - 1 : index + 1;
+      setTimeout(tick, isDeleting ? 50 : 80);
+    };
+    tick();
+  }, []);
+
+  useEffect(() => {
+    const checkDevTools = () => {
+      const threshold = 160;
+      if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+        setDevToolsDetected(true);
+      } else {
+        setDevToolsDetected(false);
+      }
+    };
+    window.addEventListener('resize', checkDevTools);
+    return () => window.removeEventListener('resize', checkDevTools);
+  }, []);
+
+  const showToast = (message) => {
+    setToast({ visible: true, message });
+    setTimeout(() => setToast({ visible: false, message: '' }), 3000);
+  };
+
+  const handleCopy = (text) => {
+    try {
+      navigator.clipboard.writeText(text);
+      showToast('Copied Successfully! 🚀');
+    } catch (err) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      showToast('Copied Successfully!');
+    }
+  };
+
+  const cryptos = {
+    ltc: { name: 'Litecoin (LTC)', address: 'LQsXy5iuRn2wbky6JGL1NmYkZRLXGkT2Ew', icon: <Wallet className="w-5 h-5" /> },
+    usdt: { name: 'USDT (TRC20)', address: 'TWAa6spHGSDJdrk8CTNfcGjKAd9CakDFhK', icon: <DollarSign className="w-5 h-5" /> },
+    btc: { name: 'Bitcoin (BTC)', address: 'bc1qf60mv4p5g2x424e9tcjz46sdez9sednvdpgt4p', icon: <Bitcoin className="w-5 h-5" /> }
+  };
+
+  if (devToolsDetected) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center p-6 text-center">
+        <div className="max-w-md w-full p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-2xl">
+          <ShieldAlert className="w-16 h-16 text-red-500 mx-auto mb-6 animate-pulse" />
+          <h2 className="text-3xl font-bold text-white mb-4">Restricted Access</h2>
+          <p className="text-gray-400 mb-6">Developer tools are detected. This section is protected for security reasons. Please close the console to continue.</p>
+          <div className="px-4 py-2 rounded-full bg-red-500/20 text-red-400 text-sm font-mono uppercase tracking-widest">System Locked</div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`min-h-screen bg-[#050505] text-white selection:bg-blue-500/30 overflow-x-hidden ${devToolsDetected ? 'blur-screen' : ''}`}>
+      <style>{globalStyles}</style>
+      <div className="fixed inset-0 z-0 bg-grid opacity-30" />
+      
+      {/* Dynamic Glow */}
+      <div className="fixed top-[-20%] left-[-10%] w-[500px] h-[500px] bg-blue-600/20 blur-[150px] rounded-full" />
+      <div className="fixed bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-600/20 blur-[150px] rounded-full" />
+
+      <main className="relative z-10 container mx-auto px-6 py-20 max-w-4xl">
+        <div className="text-center mb-16 animate-in fade-in zoom-in duration-700">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold tracking-wider text-blue-400 mb-6 uppercase tracking-widest">Secure Payments</span>
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+            {displayedText}<span className="animate-pulse text-blue-500">|</span>
+          </h1>
+          <p className="text-gray-400 text-lg">Choose your preferred gateway to proceed securely.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in slide-in-from-bottom-8 duration-700">
+          
+          {/* PayPal */}
+          <div className="glass-card p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl animate-float transition-all hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="p-3 bg-blue-500/10 rounded-2xl text-blue-400"><CreditCard /></div>
+              <h3 className="text-xl font-bold">PayPal</h3>
+            </div>
+            <a href="https://paypal.me/AbdelrahmanSayed252" target="_blank" className="w-full flex items-center justify-center gap-2 py-3 bg-white text-black font-semibold rounded-xl hover:bg-gray-200 transition-all active:scale-95">
+              Pay via PayPal <ExternalLink size={16} />
+            </a>
+          </div>
+
+          {/* Wise */}
+          <div className="glass-card p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl animate-float delay-100 transition-all hover:border-green-500/50">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="p-3 bg-green-500/10 rounded-2xl text-green-400 font-bold text-lg">W</div>
+              <h3 className="text-xl font-bold">Wise</h3>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {[ {a: '$5', u: 'https://wise.com/pay/r/KxhTAlJl7THuBAs'}, {a: '$10', u: 'https://wise.com/pay/r/mtJUgCpvc3KtyBk'}, {a: '$20', u: 'https://wise.com/pay/r/wwS0FVUrluPvgtk'} ].map(w => (
+                <a key={w.a} href={w.u} target="_blank" className="py-2 text-center text-sm font-medium bg-white/5 rounded-lg border border-white/10 hover:bg-green-500/20 transition-all active:scale-90">{w.a}</a>
+              ))}
+            </div>
+          </div>
+
+          {/* Crypto Vault */}
+          <div className="glass-card p-8 rounded-3xl md:col-span-2 bg-white/5 border border-white/10 backdrop-blur-xl transition-all hover:border-orange-500/50 hover:shadow-[0_0_30px_rgba(249,115,22,0.1)]">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-orange-500/10 rounded-2xl text-orange-400"><Wallet /></div>
+                <div>
+                  <h3 className="text-xl font-bold">Crypto Vault</h3>
+                  <p className="text-xs text-gray-500">Secure blockchain transfers</p>
+                </div>
+              </div>
+              <div className="flex bg-black/40 p-1 rounded-xl">
+                {Object.keys(cryptos).map(k => (
+                  <button key={k} onClick={() => setActiveCrypto(k)} className={`px-4 py-2 rounded-lg text-sm transition-all ${activeCrypto === k ? 'bg-white/10' : 'hover:bg-white/5'}`}>{k.toUpperCase()}</button>
+                ))}
+              </div>
+            </div>
+            <div className="p-4 bg-black/30 rounded-2xl border border-white/5">
+              <p className="font-mono text-sm text-gray-300 break-all mb-4">{cryptos[activeCrypto].address}</p>
+              <div className="flex gap-2">
+                <button onClick={() => handleCopy(cryptos[activeCrypto].address)} className="flex-1 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-all text-sm font-medium active:scale-95">Copy Address</button>
+                <button onClick={() => setQrModal({ visible: true, address: cryptos[activeCrypto].address, name: cryptos[activeCrypto].name })} className="px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-all active:scale-95"><QrCode size={18} /></button>
+              </div>
+            </div>
+          </div>
+
+          {/* FunPay */}
+          <div className="glass-card p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl animate-float delay-200 transition-all hover:border-purple-500/50">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="p-3 bg-purple-500/10 rounded-2xl text-purple-400"><Gamepad2 /></div>
+              <h3 className="text-xl font-bold">FunPay</h3>
+            </div>
+            <a href="https://funpay.com/en/users/20157502/" target="_blank" className="w-full flex items-center justify-center gap-2 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-purple-500/20 hover:border-purple-500/50 transition-all active:scale-95">
+              Visit Profile <ExternalLink size={16} />
+            </a>
+          </div>
+        </div>
+      </main>
+
+      {/* QR Modal */}
+      {qrModal.visible && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setQrModal({visible: false})}>
+          <div className="bg-[#111] p-8 rounded-3xl w-full max-w-xs text-center border border-white/10 animate-in zoom-in duration-300" onClick={e => e.stopPropagation()}>
+            <h3 className="font-bold mb-6">{qrModal.name} QR</h3>
+            <img src={`https://quickchart.io/qr?text=${qrModal.address}&size=250&dark=ffffff&light=000000`} className="w-full rounded-xl bg-white p-2 mb-6" alt="QR Code" />
+            <button onClick={() => setQrModal({visible: false})} className="w-full py-3 bg-white/10 rounded-xl hover:bg-white/20">Close</button>
+          </div>
+        </div>
+      )}
+
+      {/* Toast */}
+      {toast.visible && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-white text-black px-6 py-3 rounded-full font-bold flex items-center gap-2 animate-bounce">
+          <Check size={16} /> {toast.message}
+        </div>
+      )}
+    </div>
+  );
+}
